@@ -1,0 +1,291 @@
+<!DOCTYPE html>
+<html lang="pt-BR">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>🎧 Playlist Do Fern</title>
+  <link rel="stylesheet" href="style.css" />
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #fff;
+      display: flex;
+      flex-direction: column;
+      align-items: center;
+      min-height: 100vh;
+    }
+
+    header {
+      width: 100%;
+      background: #1d3557;
+      padding: 20px;
+      text-align: center;
+      font-size: 1.8rem;
+      font-weight: bold;
+      box-shadow: 0 4px 10px rgba(0,0,0,0.2);
+    }
+
+    nav {
+      display: flex;
+      gap: 20px;
+      margin-top: 20px;
+      flex-wrap: wrap;
+      justify-content: center;
+    }
+
+    nav button {
+      padding: 10px 20px;
+      background-color: #f1faee;
+      color: #1d3557;
+      border: none;
+      border-radius: 10px;
+      cursor: pointer;
+      transition: background 0.3s;
+    }
+
+    nav button:hover {
+      background-color: #a8dadc;
+    }
+
+    .container {
+      max-width: 700px;
+      width: 90%;
+      padding: 30px;
+      margin-top: 30px;
+      background-color: rgba(255, 255, 255, 0.1);
+      border-radius: 15px;
+      box-shadow: 0 10px 30px rgba(0, 0, 0, 0.3);
+    }
+
+    #search {
+      width: 100%;
+      padding: 10px;
+      margin-bottom: 20px;
+      border-radius: 8px;
+      border: none;
+    }
+
+    ul.playlist {
+      list-style: none;
+      padding: 0;
+    }
+
+    ul.playlist li {
+      background-color: #f1faee;
+      color: #1d3557;
+      margin-bottom: 10px;
+      padding: 10px;
+      border-radius: 8px;
+      cursor: pointer;
+    }
+
+    ul.playlist li:hover {
+      background-color: #a8dadc;
+    }
+
+    audio {
+      width: 100%;
+      margin-top: 20px;
+    }
+
+    .controls {
+      display: flex;
+      justify-content: space-around;
+      margin-top: 15px;
+    }
+
+    .controls button {
+      padding: 10px 15px;
+      background-color: #f1faee;
+      color: #1d3557;
+      border: none;
+      border-radius: 8px;
+      cursor: pointer;
+      font-weight: bold;
+    }
+
+    .controls button:hover {
+      background-color: #a8dadc;
+    }
+  </style>
+</head>
+<body>
+  <header>🎶 Music Station</header>
+  <nav>
+    <button onclick="showPlaylist('pop')">🎤 Pop</button>
+    <button onclick="showPlaylist('rock')">🎸 Rock</button>
+    <button onclick="showPlaylist('lofi')">💤 Lo-Fi</button>
+    <button onclick="showPlaylist('favoritas')">⭐ Favoritas</button>
+  </nav>
+
+  <div class="container">
+    <input type="text" id="search" placeholder="Buscar música..." />
+    <ul class="playlist" id="playlist"></ul>
+    <audio id="audioPlayer" controls></audio>
+    <div class="controls">
+      <button id="prevBtn">⏮ Anterior</button>
+      <button id="nextBtn">⏭ Próxima</button>
+      <button id="toggleTheme">🌙/☀️ Tema</button>
+    </div>
+  </div>
+
+   <script>
+    const playlistItems = document.querySelectorAll('#playlist li');
+    const audioPlayer = document.getElementById('audioPlayer');
+    const nextBtn = document.getElementById('nextBtn');
+    const prevBtn = document.getElementById('prevBtn');
+    const toggleTheme = document.getElementById('toggleTheme');
+    const searchInput = document.getElementById('search');
+
+    let currentIndex = 0;
+
+    function playSong(index) {
+      const item = playlistItems[index];
+      if (item) {
+        audioPlayer.src = item.getAttribute('data-src');
+        audioPlayer.play();
+        currentIndex = index;
+      }
+    }
+
+    playlistItems.forEach((item, index) => {
+      item.addEventListener('click', () => {
+        playSong(index);
+      });
+    });
+
+    nextBtn.addEventListener('click', () => {
+      const nextIndex = (currentIndex + 1) % playlistItems.length;
+      playSong(nextIndex);
+    });
+
+    prevBtn.addEventListener('click', () => {
+      const prevIndex = (currentIndex - 1 + playlistItems.length) % playlistItems.length;
+      playSong(prevIndex);
+    });
+
+    toggleTheme.addEventListener('click', () => {
+      document.body.classList.toggle('light');
+    });
+
+    searchInput.addEventListener('input', () => {
+      const filter = searchInput.value.toLowerCase();
+      playlistItems.forEach(item => {
+        const text = item.textContent.toLowerCase();
+        item.style.display = text.includes(filter) ? '' : 'none';
+      });
+    });
+  </script>
+
+  <style>
+    body {
+      margin: 0;
+      padding: 0;
+      font-family: 'Segoe UI', sans-serif;
+      background: linear-gradient(to right, #0f2027, #203a43, #2c5364);
+      color: #f5f5f5;
+      display: flex;
+      justify-content: center;
+      align-items: center;
+      min-height: 100vh;
+      transition: background 0.3s, color 0.3s;
+    }
+
+    body.light {
+      background: linear-gradient(to right, #e0f7fa, #ffffff);
+      color: #263238;
+    }
+
+    .container {
+      background: rgba(255, 255, 255, 0.1);
+      padding: 30px;
+      border-radius: 20px;
+      box-shadow: 0 8px 25px rgba(0, 0, 0, 0.3);
+      text-align: center;
+      width: 90%;
+      max-width: 600px;
+    }
+
+    h1 {
+      margin-bottom: 20px;
+      font-size: 2.5em;
+      color: inherit;
+    }
+
+    #playlist {
+      list-style: none;
+      padding: 0;
+      margin-bottom: 20px;
+    }
+
+    #playlist li {
+      padding: 12px 18px;
+      background-color: #ffffff15;
+      color: inherit;
+      border-radius: 10px;
+      margin-bottom: 10px;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    #playlist li:hover {
+      background-color: #ffffff25;
+      transform: scale(1.02);
+    }
+
+    audio {
+      width: 100%;
+      margin-top: 15px;
+    }
+
+    .controls button {
+      margin: 10px 5px;
+      padding: 12px 20px;
+      border: none;
+      border-radius: 10px;
+      background-color: #29b6f6;
+      color: white;
+      font-weight: bold;
+      cursor: pointer;
+      transition: background 0.3s, transform 0.2s;
+    }
+
+    .controls button:hover {
+      background-color: #0288d1;
+      transform: scale(1.05);
+    }
+
+    #search {
+      width: 100%;
+      padding: 12px;
+      margin-bottom: 15px;
+      border-radius: 10px;
+      border: none;
+    }
+
+    body.light .container {
+      background: rgba(0, 0, 0, 0.05);
+    }
+
+    body.light #playlist li {
+      background-color: #ffffff;
+      color: #263238;
+    }
+
+    body.light #playlist li:hover {
+      background-color: #b2ebf2;
+    }
+
+    body.light .controls button {
+      background-color: #0288d1;
+    }
+
+    body.light .controls button:hover {
+      background-color: #01579b;
+    }
+  </style>
+</body>
+</html>
